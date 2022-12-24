@@ -1,6 +1,8 @@
 # Модуль cards
 # Набор базовых классов для карточной игры
 
+import easygui as gui
+
 class Card:
     """ Одна игральная карта. """
     RANKS = ["Т", "2", "3", "4", "5", "6", "7",
@@ -80,10 +82,9 @@ class Deck(Hand):
                     top_card = self.cards[0]
                     self.give(top_card, hand)
                 else:
-                    print("Не могу больше сдавать: карты закончились!")
+                    gui.msgbox("Не могу больше сдавать: карты закончились!")
 
 
 
 if __name__ == "__main__":
-    print("Вы запустили модуль cards, а не импортировали его (import cards).")
-    input("\n\nНажмите Enter, чтобы выйти.")
+    gui.msgbox("Вы запустили модуль cards, а не импортировали его (import cards).")

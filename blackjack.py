@@ -83,13 +83,13 @@ class BJ_Player(BJ_Hand):
             TITLE, image=ICON)
 
     def lose(self):
-        gui.msgbox(self.name + " проиграл(а).", TITLE)
+        return str(self) + " проиграл(а)."
 
     def win(self):
-        gui.msgbox(self.name + " выиграл(а).", TITLE)
+        return str(self) + " выиграл(а)."
 
     def push(self):
-        gui.msgbox(self.name + " сыграл(а) с дилером вничью.", TITLE)
+        return str(self) + " сыграл(а) с дилером вничью."
 
         
 class BJ_Dealer(BJ_Hand):
@@ -98,7 +98,7 @@ class BJ_Dealer(BJ_Hand):
         return self.total < 17
 
     def bust(self):
-        gui.msgbox(self.name + " перебрал.", TITLE)
+        gui.msgbox(str(self) + '\n' + self.name + " перебрал.", TITLE, image=ICON)
 
     def flip_first_card(self):
         first_card = self.cards[0]
@@ -132,6 +132,8 @@ class BJ_Game:
             self.deck.deal([player])
             if player.is_busted():
                 player.bust()
+            elif player is self.dealer:
+                gui.msgbox('Дилер взял дополнительную карту.\n' + str(player), TITLE, image=ICON)
            
     def play(self):
         # сдача всем по две карты
@@ -156,19 +158,21 @@ class BJ_Game:
             gui.msgbox(str(self.dealer), TITLE, image=ICON)
             self.__additional_cards(self.dealer)
 
+            results = []
             if self.dealer.is_busted():
                 # выигрывают все, кто еще остался в игре
                 for player in self.still_playing:
-                    player.win()                    
+                    results.append(player.win())
             else:
                 # сравниваем суммы очков у дилера и у игроков, оставшихся в игре
                 for player in self.still_playing:
                     if player.total > self.dealer.total:
-                        player.win()
+                        results.append(player.win())
                     elif player.total < self.dealer.total:
-                        player.lose()
+                        results.append(player.lose())
                     else:
-                        player.push()
+                        results.append(player.push())
+            gui.msgbox('\n'.join(results), TITLE, image=ICON)
 
         # удаление всех карт
         for player in self.players:

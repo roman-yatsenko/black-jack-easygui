@@ -75,12 +75,12 @@ class BJ_Hand(cards.Hand):
 class BJ_Player(BJ_Hand):
     """ Игрок в Блек-джек. """
     def is_hitting(self):
-        response = games.ask_yes_no(self.name + ", будете брать еще карты ?")
+        response = games.ask_yes_no(str(self) + "\nБудете брать еще карты ?")
         return response
 
     def bust(self):
-        gui.msgbox(self.name + " перебрал(а).", TITLE)
-        self.lose()
+        gui.msgbox(str(self) + '\n' + self.name + " перебрал и проиграл.", 
+            TITLE, image=ICON)
 
     def lose(self):
         gui.msgbox(self.name + " проиграл(а).", TITLE)
@@ -130,7 +130,6 @@ class BJ_Game:
     def __additional_cards(self, player):
         while not player.is_busted() and player.is_hitting():
             self.deck.deal([player])
-            gui.msgbox(str(player), TITLE)
             if player.is_busted():
                 player.bust()
            
@@ -151,10 +150,10 @@ class BJ_Game:
 
         if not self.still_playing:
             # все игроки перебрали, покажем только "руку" дилера
-            gui.msgbox(str(self.dealer), TITLE)
+            gui.msgbox(str(self.dealer), TITLE, image=ICON)
         else:
             # сдача дополнительных карт дилеру
-            gui.msgbox(str(self.dealer), TITLE)
+            gui.msgbox(str(self.dealer), TITLE, image=ICON)
             self.__additional_cards(self.dealer)
 
             if self.dealer.is_busted():

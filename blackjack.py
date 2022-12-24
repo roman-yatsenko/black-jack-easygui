@@ -1,7 +1,11 @@
 # Блек-джек
 # От 1 до 7 игроков против дилера
 
+import easygui as gui
+
 import cards, games     
+
+TITLE = 'Блек Джек'
 
 class BJ_Card(cards.Positionable_Card):
     """ Карта для игры в Блек-джек. """
@@ -174,22 +178,21 @@ class BJ_Game:
         
 
 def main():
-    print("\t\tДобро пожаловать в игру Блек-джек!\n")
+    gui.msgbox("\t\tДобро пожаловать в игру Блек-джек!\n", TITLE)
     
     names = []
     number = games.ask_number("Сколько всего игроков? (1 - 7): ", 
         low = 1, high = 7)
     for i in range(number):
-        name = input("Введите имя игрока № " + str(i + 1) + " :")
+        name = gui.enterbox("Введите имя игрока № " + str(i + 1), TITLE, default='Игрок' + str(i + 1))
         names.append(name)
-    print()
         
     game = BJ_Game(names)
 
-    again = None
-    while again != "n":
+    again = True
+    while again:
         game.play()
-        again = games.ask_yes_no("\nХотите сыграть еще раз")
+        again = games.ask_yes_no("\nХотите сыграть еще раз?", TITLE)
 
 
 main()

@@ -139,9 +139,9 @@ class BJ_Game:
         self.deck.deal(self.players + [self.dealer], per_hand = 2)
         self.dealer.flip_first_card()    
         # первая из карт, сданных дилеру, переворачивается
-        for player in self.players:
-            gui.msgbox(str(player), TITLE)
-        gui.msgbox(str(self.dealer), TITLE)
+        gui.msgbox('\n'.join(
+            (str(player) for player in self.players + [self.dealer])
+        ), TITLE, image=ICON)
 
         # сдача дополнительных карт игрокам
         for player in self.players:
